@@ -8,6 +8,8 @@ import {
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
+import Orders from './pages/dashboard/Orders';
+import Product from './pages/dashboard/Product';
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -34,6 +36,18 @@ export const routes = [
         name: "tables",
         path: "/tables",
         element: <Tables />,
+      },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Orders",
+        path: "/Orders",
+        element: <Orders />,
+      },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Product",
+        path: "/Product",
+        element: <Product />,
       },
       {
         icon: <BellIcon {...icon} />,

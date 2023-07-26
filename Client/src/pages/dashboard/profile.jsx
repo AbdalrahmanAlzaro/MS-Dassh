@@ -20,7 +20,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
-import { platformSettingsData, conversationsData, projectsData } from "@/data";
+import { platformSettingsData, conversationsData } from "@/data";
 
 export function Profile() {
   return (
@@ -148,7 +148,7 @@ export function Profile() {
             >
               Architects design houses
             </Typography>
-            <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
+            {/* <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
               {projectsData.map(
                 ({ img, title, description, tag, route, members }) => (
                   <Card key={title} color="transparent" shadow={false}>
@@ -209,7 +209,7 @@ export function Profile() {
                   </Card>
                 )
               )}
-            </div>
+            </div> */}
           </div>
         </CardBody>
       </Card>
