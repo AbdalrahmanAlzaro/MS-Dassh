@@ -4,17 +4,19 @@ import { v4 as uuidv4 } from "uuid";
 
 function Product() {
   const [selectedOption, setSelectedOption] = useState("");
-  const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+
+  console.log(file)
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
+    const image = e.target.files[0];
+    setFile(image);
   };
 
   const handleDescriptionChange = (e) => {
@@ -30,18 +32,19 @@ function Product() {
     // Generate a unique id for the product
     const id = uuidv4();
 
-    // Prepare the data to send to the server
-    const productData = {
-      id: id,
-      category: selectedOption,
-      image: image,
-      Description: description,
-      price: price,
-    };
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("category", selectedOption);
+    formData.append("description", description);
+    formData.append("image", file);
+    formData.append("price", price);
+
+    
+    console.log(formData)
 
     // Send the data to the server using Axios
     axios
-      .post("http://localhost:3000/products", productData)
+      .post("http://localhost:3000/products", formData)
       .then((response) => {
         console.log("Product added successfully:", response.data);
         alert("Product added successfully!");
@@ -77,11 +80,11 @@ function Product() {
               className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500"
             >
               <option value="">-- Select Option --</option>
-              <option value="option1">Agricultural Nursery</option>
-              <option value="option2">Animal Farm</option>
-              <option value="option3">Agricultural Tool</option>
-              <option value="option4">Animal Farm Tool</option>
-              <option value="option5">Offer</option>
+              <option value="AgriculturalNursery">Agricultural Nursery</option>
+              <option value="AnimalFarm">Animal Farm</option>
+              <option value="AgriculturalTool">Agricultural Tool</option>
+              <option value="AnimalFarmTool">Animal Farm Tool</option>
+              <option value="Offer">Offer</option>
             </select>
           </div>
           <div className="mb-4">
@@ -93,14 +96,14 @@ function Product() {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
-              {image ? (
+              {file ? (
                 <div>
                   <img
-                    src={URL.createObjectURL(image)}
+                    src={URL.createObjectURL(file)}
                     alt="Selected"
                     className="mb-2 h-32 w-full object-cover"
                   />
-                  <p className="text-sm">{image.name}</p>
+                  <p className="text-sm">{file.name}</p>
                 </div>
               ) : (
                 <label htmlFor="imageInput" className="text-sm text-gray-500">
