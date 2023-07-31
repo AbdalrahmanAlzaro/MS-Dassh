@@ -8,7 +8,7 @@ function Product() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
 
-  console.log(file)
+  console.log(file);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -39,8 +39,7 @@ function Product() {
     formData.append("image", file);
     formData.append("price", price);
 
-    
-    console.log(formData)
+    console.log(formData);
 
     // Send the data to the server using Axios
     axios
@@ -81,8 +80,8 @@ function Product() {
             >
               <option value="">-- Select Option --</option>
               <option value="AgriculturalNursery">Agricultural Nursery</option>
-              <option value="AnimalFarm">Animal Farm</option>
               <option value="AgriculturalTool">Agricultural Tool</option>
+              <option value="AnimalFarm">Animal Farm</option>
               <option value="AnimalFarmTool">Animal Farm Tool</option>
               <option value="Offer">Offer</option>
             </select>
