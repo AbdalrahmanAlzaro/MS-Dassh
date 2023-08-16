@@ -13,7 +13,7 @@ function Orders() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/allOrders")
+      .get("http://localhost:3000/join-data-for-all-order")
       .then((response) => setOrders(response.data))
       .catch((error) => console.error("Error fetching orders", error));
   }, []);
@@ -32,7 +32,7 @@ function Orders() {
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["Order ID", "Customer", "Products", "Status"].map((el) => (
+                {["Order ID", "Customer", "Products", "Status", "subtotal"].map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"

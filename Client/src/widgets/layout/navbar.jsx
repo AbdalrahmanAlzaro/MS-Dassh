@@ -8,9 +8,8 @@ import {
   Button,
   IconButton,
 } from "@material-tailwind/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
-export function Navbar({ brandName, routes, action }) {
+export function Navbar({ routes,  }) {
   const [openNav, setOpenNav] = React.useState(false);
 
   React.useEffect(() => {
@@ -43,56 +42,14 @@ export function Navbar({ brandName, routes, action }) {
   );
 
   return (
-    <MTNavbar className="p-3">
-      <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
-        <Link to="/">
-          <Typography
-            variant="small"
-            className="mr-4 ml-2 cursor-pointer py-1.5 font-bold"
-          >
-            {brandName}
-          </Typography>
-        </Link>
-        <div className="hidden lg:block">{navList}</div>
-        {React.cloneElement(action, {
-          className: "hidden lg:inline-block",
-        })}
-        <IconButton
-          variant="text"
-          size="sm"
-          className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-          onClick={() => setOpenNav(!openNav)}
-        >
-          {openNav ? (
-            <XMarkIcon strokeWidth={2} className="h-6 w-6" />
-          ) : (
-            <Bars3Icon strokeWidth={2} className="h-6 w-6" />
-          )}
-        </IconButton>
-      </div>
-      <MobileNav open={openNav}>
-        <div className="container mx-auto">
-          {navList}
-          {React.cloneElement(action, {
-            className: "w-full block lg:hidden",
-          })}
-        </div>
-      </MobileNav>
-    </MTNavbar>
+    <a></a>
   );
 }
 
 Navbar.defaultProps = {
-  brandName: "Material Tailwind React",
+  brandName: "HarvestMart",
   action: (
-    <a
-      href="https://www.creative-tim.com/product/material-tailwind-dashboard-react"
-      target="_blank"
-    >
-      <Button variant="gradient" size="sm" fullWidth>
-        free download
-      </Button>
-    </a>
+   <a></a> 
   ),
 };
 
