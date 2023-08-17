@@ -9,21 +9,52 @@ function Product() {
   const [price, setPrice] = useState("");
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
-  const openEditForm = (productId) => {
-    const productToEdit = products.find((product) => product.id === productId);
-    setEditingProduct(productToEdit);
+  const deleteProduct = async (productId) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/deleteProduct/${productId}`
+      );
+      console.log("Product deleted successfully:", response.data.message);
+      // You can also update your products state to remove the deleted product
+      // Fetch the updated list of products after deletion
+      const updatedProducts = products.filter(
+        (product) => product.id !== productId
+      );
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("An error occurred while deleting the product.");
+    }
   };
 
-  const closeEditForm = () => {
-    setEditingProduct(null);
-  };
+  const handleUpdateProduct = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("category", editingProduct.category);
+      formData.append("description", editingProduct.description);
+      formData.append("price", editingProduct.price);
 
-  const updateProduct = () => {
-    // Implement your update logic here
-    // Call your update product function and update the product details
-    // handleUpdateProduct(editingProduct.id, updatedDetails);
-    closeEditForm();
+      if (editingProduct.image) {
+        formData.append("image", editingProduct.image);
+      }
+
+      const response = await axios.put(
+        `http://localhost:3000/editeProducts/${editingProduct.id}`,
+        formData
+      );
+
+      console.log("Product updated successfully:", response.data);
+      const updatedProducts = products.map((product) =>
+        product.id === editingProduct.id ? response.data[0] : product
+      );
+      setProducts(updatedProducts);
+      setEditingProduct(null);
+    } catch (error) {
+      console.error("Error updating product:", error);
+      alert("An error occurred while updating the product.");
+    }
   };
 
   useEffect(() => {
@@ -35,7 +66,7 @@ function Product() {
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
-  }, []);
+  }, [refresh]);
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
@@ -45,7 +76,6 @@ function Product() {
     const image = e.target.files[0];
     setFile(image);
   };
-  console.log(editingProduct?.image.name);
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
@@ -64,13 +94,13 @@ function Product() {
     formData.append("description", description);
     formData.append("image", file);
     formData.append("price", price);
-    console.log(formData);
 
     axios
       .post("http://localhost:3000/products", formData)
       .then((response) => {
         console.log("Product added successfully:", response.data);
         alert("Product added successfully!");
+        setRefresh(!refresh);
       })
       .catch((error) => {
         console.error("Error adding product:", error);
@@ -81,11 +111,20 @@ function Product() {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    setImage(file);
+    setFile(file);
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
+  };
+
+  const openEditForm = (productId) => {
+    const productToEdit = products.find((product) => product.id === productId);
+    setEditingProduct(productToEdit);
+  };
+
+  const closeEditForm = () => {
+    setEditingProduct(null);
   };
 
   return (
@@ -198,7 +237,7 @@ function Product() {
           <div key={product.id} className="rounded-md bg-white p-4 shadow-md">
             <img
               src={product.image}
-              alt=""
+              alt="product image"
               className="mx-auto mb-2 h-32 w-32 object-contain"
             />
             <h2 className="mb-2 text-lg font-medium">{product.description}</h2>
@@ -207,7 +246,7 @@ function Product() {
             <div className="flex justify-between">
               <button
                 className="rounded-md bg-red-500 py-1 px-2 text-white transition-colors duration-300 hover:bg-red-600"
-                onClick={() => handleDeleteProduct(product.id)}
+                onClick={() => deleteProduct(product.id)} // Call the deleteProduct function
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -256,119 +295,127 @@ function Product() {
         ))}
       </div>
       {editingProduct && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-96 rounded-md bg-white p-6 shadow-md">
-            <h2 className="mb-2 text-lg font-medium">Edit Product</h2>
-            <div className="mb-4">
-              <label className="mb-1 block text-sm font-medium">
-                Select Category:
-              </label>
-              <select
-                value={editingProduct.category}
-                onChange={(e) =>
-                  setEditingProduct({
-                    ...editingProduct,
-                    category: e.target.value,
-                  })
-                }
-                className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500"
-              >
-                <option value="">-- Select Option --</option>
-                <option value="AgriculturalNursery">
-                  Agricultural Nursery
-                </option>
-                <option value="AgriculturalTool">Agricultural Tool</option>
-                <option value="AnimalFarm">Animal Farm</option>
-                <option value="AnimalFarmTool">Animal Farm Tool</option>
-                <option value="Offer">Offer</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block text-sm font-medium">
-                Choose Image:
-              </label>
-              <div className="flex w-full cursor-pointer items-center justify-between rounded-md border bg-white px-4 py-2 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500">
-                {editingProduct?.image?.name ? (
-                  <span className="text-gray-500">
-                    {editingProduct.image.name}
-                  </span>
-                ) : (
-                  <span className="text-gray-500">Select an image...</span>
-                )}
-                <input
-                  type="file"
-                  accept="image/*"
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleUpdateProduct();
+            closeEditForm();
+          }}
+        >
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="w-96 rounded-md bg-white p-6 shadow-md">
+              <h2 className="mb-2 text-lg font-medium">Edit Product</h2>
+              <div className="mb-4">
+                <label className="mb-1 block text-sm font-medium">
+                  Select Category:
+                </label>
+                <select
+                  value={editingProduct.category}
                   onChange={(e) =>
                     setEditingProduct({
                       ...editingProduct,
-                      image: e.target.files[0],
+                      category: e.target.value,
                     })
                   }
-                />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-gray-500"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+                  className="w-full rounded-md border border-gray-300 px-4 py-2 focus:outline-none focus:ring focus:ring-blue-500"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M9 2a1 1 0 0 1 1 1v4.586l2.707-2.707a1 1 0 0 1 1.414 1.414L11.414 9l2.707 2.707a1 1 0 0 1-1.414 1.414L10 10.414l-2.707 2.707a1 1 0 1 1-1.414-1.414L8.586 9 5.879 6.293A1 1 0 0 1 7.293 4.88L10 7.586V3a1 1 0 0 1 1-1z"
+                  <option value="">-- Select Option --</option>
+                  <option value="AgriculturalNursery">
+                    Agricultural Nursery
+                  </option>
+                  <option value="AgriculturalTool">Agricultural Tool</option>
+                  <option value="AnimalFarm">Animal Farm</option>
+                  <option value="AnimalFarmTool">Animal Farm Tool</option>
+                  <option value="Offer">Offer</option>
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="mb-1 block text-sm font-medium">
+                  Choose Image:
+                </label>
+                <div className="flex w-full cursor-pointer items-center justify-between rounded-md border bg-white px-4 py-2 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-blue-500">
+                  {editingProduct?.image?.name ? (
+                    <span className="text-gray-500">
+                      {editingProduct.image.name}
+                    </span>
+                  ) : (
+                    <span className="text-gray-500">Select an image...</span>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      setEditingProduct({
+                        ...editingProduct,
+                        image: e.target.files[0],
+                      })
+                    }
                   />
-                  <path
-                    fillRule="evenodd"
-                    d="M2 8a1 1 0 0 1 1-1h4.586l-2.293-2.293a1 1 0 1 1 1.414-1.414L9 6.586l2.707-2.707a1 1 0 0 1 1.414 1.414L10.414 8l2.707 2.707a1 1 0 0 1-1.414 1.414L9 9.414l-2.707 2.707a1 1 0 0 1-1.414-1.414L6.586 8H3a1 1 0 0 1-1-1z"
-                  />
-                </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-gray-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9 2a1 1 0 0 1 1 1v4.586l2.707-2.707a1 1 0 0 1 1.414 1.414L11.414 9l2.707 2.707a1 1 0 0 1-1.414 1.414L10 10.414l-2.707 2.707a1 1 0 1 1-1.414-1.414L8.586 9 5.879 6.293A1 1 0 0 1 7.293 4.88L10 7.586V3a1 1 0 0 1 1-1z"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M2 8a1 1 0 0 1 1-1h4.586l-2.293-2.293a1 1 0 1 1 1.414-1.414L9 6.586l2.707-2.707a1 1 0 0 1 1.414 1.414L10.414 8l2.707 2.707a1 1 0 0 1-1.414 1.414L9 9.414l-2.707 2.707a1 1 0 0 1-1.414-1.414L6.586 8H3a1 1 0 0 1-1-1z"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <label className="mb-1 block text-sm font-medium">
+                  Description:
+                </label>
+                <input
+                  type="text"
+                  value={editingProduct.description}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      description: e.target.value,
+                    })
+                  }
+                  className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="mb-1 block text-sm font-medium">Price:</label>
+                <input
+                  type="text"
+                  value={editingProduct.price}
+                  onChange={(e) =>
+                    setEditingProduct({
+                      ...editingProduct,
+                      price: e.target.value,
+                    })
+                  }
+                  className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  className="mr-2 rounded-md bg-blue-500 px-4 py-2 text-white"
+                  onClick={handleUpdateProduct}
+                >
+                  Update
+                </button>
+                <button
+                  className="rounded-md bg-gray-300 px-4 py-2 text-gray-800"
+                  onClick={closeEditForm}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
-
-            <div className="mb-4">
-              <label className="mb-1 block text-sm font-medium">
-                Description:
-              </label>
-              <input
-                type="text"
-                value={editingProduct.description}
-                onChange={(e) =>
-                  setEditingProduct({
-                    ...editingProduct,
-                    description: e.target.value,
-                  })
-                }
-                className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block text-sm font-medium">Price:</label>
-              <input
-                type="text"
-                value={editingProduct.price}
-                onChange={(e) =>
-                  setEditingProduct({
-                    ...editingProduct,
-                    price: e.target.value,
-                  })
-                }
-                className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                className="mr-2 rounded-md bg-blue-500 px-4 py-2 text-white"
-                onClick={updateProduct}
-              >
-                Update
-              </button>
-              <button
-                className="rounded-md bg-gray-300 px-4 py-2 text-gray-800"
-                onClick={closeEditForm}
-              >
-                Cancel
-              </button>
-            </div>
           </div>
-        </div>
+        </form>
       )}
     </>
   );
