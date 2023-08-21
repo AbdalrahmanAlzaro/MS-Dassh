@@ -5,7 +5,8 @@ import {
   BellIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Tables } from "@/pages/dashboard";
+import Message from './pages/dashboard/Message'
 import { SignIn, } from "@/pages/auth";
 import Orders from './pages/dashboard/Orders';
 import Product from './pages/dashboard/Product';
@@ -24,12 +25,7 @@ export const routes = [
         path: "/home",
         element: <Home />,
       },
-      // {
-      //   icon: <UserCircleIcon {...icon} />,
-      //   name: "profile",
-      //   path: "/profile",
-      //   element: <Profile />,
-      // },
+
       {
         icon: <TableCellsIcon {...icon} />,
         name: "tables",
@@ -50,9 +46,9 @@ export const routes = [
       },
       {
         icon: <BellIcon {...icon} />,
-        name: "notifactions",
-        path: "/notifactions",
-        element: <Notifications />,
+        name: "Message",
+        path: "/Message",
+        element: <Message />,
       },
     ],
   },

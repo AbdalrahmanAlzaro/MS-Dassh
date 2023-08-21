@@ -129,6 +129,13 @@ function Product() {
 
   return (
     <>
+      <br />
+      <br />
+      <div className="flex items-center justify-center">
+        <h1 className="text-center text-4xl">Add Product</h1>
+      </div>
+      <br />
+      <br />
       <div className="mx-auto max-w-md">
         <div className="rounded-md bg-white p-6 shadow-md">
           <h2 className="mb-4 text-lg font-medium">Card Form</h2>
@@ -230,6 +237,11 @@ function Product() {
       </div>
       <br />
       <br />
+      <br />
+      <br />
+      <div className="flex items-center justify-center">
+        <h1 className="text-center text-4xl">All product</h1>
+      </div>
       <br />
       <br />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
