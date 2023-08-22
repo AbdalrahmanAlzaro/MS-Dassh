@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -11,7 +12,7 @@ import {
   Progress,
 } from "@material-tailwind/react";
 
-export function Tables() {
+function Users() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -20,14 +21,13 @@ export function Tables() {
       .then((response) => setUsers(response.data))
       .catch((error) => console.error("Error fetching users", error));
   }, []);
-  console.log(users);
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
         <CardHeader variant="gradient" color="blue" className="mb-8 p-6">
           <Typography variant="h6" color="white">
-            jjjjjjjjjjjjjjjjjjiuk
+            Users table 
           </Typography>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
@@ -114,3 +114,5 @@ export function Tables() {
     </div>
   );
 }
+
+export default Users;

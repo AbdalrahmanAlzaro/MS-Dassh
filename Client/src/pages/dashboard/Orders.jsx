@@ -21,75 +21,79 @@ function Orders() {
   console.log(orders);
 
   return (
-    <div className="mt-12 mb-8 flex flex-col gap-12">
-      <Card>
-        <CardHeader variant="gradient" color="blue" className="mb-8 p-6">
-          <Typography variant="h6" color="white">
-            Orders table
-          </Typography>
-        </CardHeader>
-        <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-          <table className="w-full min-w-[640px] table-auto">
-            <thead>
-              <tr>
-                {["Order ID", "Customer", "Products", "Status", "subtotal"].map((el) => (
-                  <th
-                    key={el}
-                    className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                  >
-                    <Typography
-                      variant="small"
-                      className="text-[11px] font-bold uppercase text-blue-gray-400"
-                    >
-                      {el}
-                    </Typography>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map(({ id, product_data, user_id }, index) => {
-                const orderId = id;
-                const customerName = user_id;
-                const Products = product_data;
-                const status = "completed"; // You can modify this based on your data
+    <div className="mx-auto mt-12 mb-8 flex w-3/4 flex-col gap-12">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+        {orders.map(
+          (
+            {
+              date,
+              ordernumber,
+              product_data,
+              subtotal,
+              username,
+              email,
+              phonenumber,
+            },
+            index
+          ) => {
+            const orderId = ordernumber;
+            const customerName = username;
+            const userEmail = email;
+            const userPhone = phonenumber;
+            const Products = product_data;
+            const status = "completed"; // You can modify this based on your data
 
-                const className = `py-3 px-5 ${
-                  index === orders.length - 1
-                    ? ""
-                    : "border-b border-blue-gray-50"
-                }`;
-
-                return (
-                  <tr key={orderId}>
-                    <td className={className}>{orderId}</td>
-                    <td className={className}>{customerName}</td>
-                    <td className={`${className} overflow-hidden`}>
-                      <div className="flex flex-col gap-2">
-                        {Products.map((element) => (
-                          <div key={element.name} className="mb-2">
-                            <p>{element.name}</p>
-                            <p>{element.price}</p>
-                            <p>{element.quantity}</p>
-                          </div>
-                        ))}
+            return (
+              <Card key={orderId} className="p-6 shadow-md ">
+                <Typography variant="h6" className="mb-4 ">
+                  Order ID: {orderId}
+                </Typography>
+                <div className="mb-4 flex justify-between">
+                  <Typography className="font-medium">Customer:</Typography>
+                  <Typography>{customerName}</Typography>
+                </div>
+                <div className="mb-4 flex justify-between">
+                  <Typography className="font-medium">Email:</Typography>
+                  <Typography>{userEmail}</Typography>
+                </div>
+                <div className="mb-4 flex justify-between">
+                  <Typography className="font-medium">Phone Number:</Typography>
+                  <Typography>{userPhone}</Typography>
+                </div>
+                <div className="mb-4">
+                  <Typography className="font-medium">Products:</Typography>
+                  <div className="mt-2 space-y-2">
+                    {Products.map((product) => (
+                      <div key={product.id}>
+                        <p>Name: {product.name}</p>
+                        <p>Price: {product.price}</p>
+                        <p>Quantity: {product.quantity}</p>
                       </div>
-                    </td>
-                    <td className={className}>
-                      <Chip
-                        variant="gradient"
-                        color={status === "completed" ? "green" : "blue"}
-                        value={status}
-                        className="py-0.5 px-2 text-[11px] font-medium"
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </CardBody>
-      </Card>
+                    ))}
+                  </div>
+                </div>
+                <div className="mb-4 flex justify-between">
+                  <Typography className="font-medium">Subtotal:</Typography>
+                  <Typography>${subtotal}</Typography>
+                </div>
+                <div className="mb-4 flex justify-between">
+                  <Typography className="font-medium">Date:</Typography>
+                  <Typography>{new Date(date).toLocaleDateString()}</Typography>
+                </div>
+                <div className="flex justify-between">
+                  <Chip
+                    variant="gradient"
+                    color={status === "completed" ? "green" : "blue"}
+                    value={status}
+                    className="py-0.5 px-2 text-[11px] font-medium"
+                  />
+                  <Typography className="font-medium">{status}</Typography>
+                </div>
+              </Card>
+            );
+          }
+        )}
+      </div>
     </div>
   );
 }

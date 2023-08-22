@@ -12,20 +12,24 @@ function Product() {
   const [refresh, setRefresh] = useState(false);
 
   const deleteProduct = async (productId) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:3000/deleteProduct/${productId}`
-      );
-      console.log("Product deleted successfully:", response.data.message);
-      // You can also update your products state to remove the deleted product
-      // Fetch the updated list of products after deletion
-      const updatedProducts = products.filter(
-        (product) => product.id !== productId
-      );
-      setProducts(updatedProducts);
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      alert("An error occurred while deleting the product.");
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+
+    if (shouldDelete) {
+      try {
+        const response = await axios.put(
+          `http://localhost:3000/deleteProduct/${productId}`
+        );
+        console.log("Product deleted successfully:", response.data.message);
+        const updatedProducts = products.filter(
+          (product) => product.id !== productId
+        );
+        setProducts(updatedProducts);
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        alert("An error occurred while deleting the product.");
+      }
     }
   };
 
@@ -258,7 +262,7 @@ function Product() {
             <div className="flex justify-between">
               <button
                 className="rounded-md bg-red-500 py-1 px-2 text-white transition-colors duration-300 hover:bg-red-600"
-                onClick={() => deleteProduct(product.id)} // Call the deleteProduct function
+                onClick={() => deleteProduct(product.id)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
