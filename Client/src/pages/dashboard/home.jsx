@@ -20,6 +20,51 @@ export function Home() {
   let totalSubtotal;
   let userOrder;
   let userCount;
+
+  const [aboutUsData, setAboutUsData] = useState([]);
+  const [selectedAboutUs, setSelectedAboutUs] = useState(null);
+
+  useEffect(() => {
+    // Fetch AboutUs data
+    axios
+      .get("http://localhost:3000/aboutus")
+      .then((response) => {
+        setAboutUsData(response.data);
+        if (response.data.length > 0) {
+          setSelectedAboutUs(response.data[0]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching AboutUs data:", error);
+      });
+  }, []);
+
+  const handleAboutUsSelect = (aboutUs) => {
+    setSelectedAboutUs(aboutUs);
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    if (!selectedAboutUs) {
+      return;
+    }
+
+    const { id, title, description } = selectedAboutUs;
+
+    // Update AboutUs record
+    axios
+      .put(`http://localhost:3000/aboutus/${id}`, { title, description })
+      .then((response) => {
+        console.log("AboutUs record updated successfully:", response.data);
+        // alert("AboutUs record updated successfully");
+      })
+      .catch((error) => {
+        console.error("Error updating AboutUs record:", error);
+        // alert("Error updating AboutUs record");
+      });
+  };
+
   useEffect(() => {
     axios
       .all([
@@ -42,7 +87,6 @@ export function Home() {
         console.error("Error fetching data:", error);
       });
   }, []);
-  console.log(userData.totalSubtotal);
 
   useEffect(() => {
     axios
@@ -73,9 +117,6 @@ export function Home() {
     <>
       <div className="mt-12">
         <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
-          {/* ...map and render your StatisticsCard components */}
-
-          {/* User Count */}
           <StatisticsCard
             title="User Count"
             icon={
@@ -111,65 +152,148 @@ export function Home() {
                 })}
               </div>
             }
-            footer={`${userData.totalSubtotal}`}
+            footer={`${userData.totalSubtotal}$`}
           />
         </div>
       </div>
+<br />
+<br />
+<br />
+      <div className="mx-auto flex max-w-4xl items-center justify-between space-x-6">
+        <div className="w-1/2">
+          <div className="mx-auto flex h-full max-w-lg flex-col justify-center">
+            <h1 className="mb-4 text-center text-2xl font-semibold">
+              Edit Contact Information
+            </h1>
 
-      <div className="mx-auto max-w-lg">
-        <h1 className="mb-4 text-center">Edit Contact Information</h1>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <form className="h-96 rounded-md bg-white p-6 shadow-md">
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">
+                    Address:
+                  </label>
+                  <input
+                    type="text"
+                    className="te w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                    value={contactInfo.address}
+                    onChange={(e) =>
+                      setContactInfo({
+                        ...contactInfo,
+                        address: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">
+                    Phone Number:
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                    value={contactInfo.phone_number}
+                    onChange={(e) =>
+                      setContactInfo({
+                        ...contactInfo,
+                        phone_number: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">
+                    Email:
+                  </label>
+                  <input
+                    type="email"
+                    className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                    value={contactInfo.email}
+                    onChange={(e) =>
+                      setContactInfo({ ...contactInfo, email: e.target.value })
+                    }
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="w-full rounded-md bg-blue-500 py-2 px-4 text-white transition-colors duration-300 hover:bg-blue-600"
+                  onClick={handleUpdate}
+                >
+                  Update
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
 
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <form className="rounded-md bg-white p-6 shadow-md">
-            <div className="mb-4">
-              <label className="mb-1 block text-sm font-medium">Address:</label>
-              <input
-                type="text"
-                className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
-                value={contactInfo.address}
-                onChange={(e) =>
-                  setContactInfo({ ...contactInfo, address: e.target.value })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block text-sm font-medium">
-                Phone Number:
-              </label>
-              <input
-                type="text"
-                className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
-                value={contactInfo.phone_number}
-                onChange={(e) =>
-                  setContactInfo({
-                    ...contactInfo,
-                    phone_number: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-1 block text-sm font-medium">Email:</label>
-              <input
-                type="email"
-                className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
-                value={contactInfo.email}
-                onChange={(e) =>
-                  setContactInfo({ ...contactInfo, email: e.target.value })
-                }
-              />
-            </div>
-            <button
-              type="button"
-              className="w-full rounded-md bg-blue-500 py-2 px-4 text-white transition-colors duration-300 hover:bg-blue-600"
-              onClick={handleUpdate}
+        <div className="w-1/2">
+          <div className="mx-auto flex h-full max-w-lg flex-col justify-center">
+            <h1 className="mb-4 text-center text-2xl font-semibold">
+              Update AboutUs Record
+            </h1>
+
+            <form
+              onSubmit={handleFormSubmit}
+              className="h-96 rounded bg-white p-6 shadow-md"
             >
-              Update Contact Info
-            </button>
-          </form>
-        )}
+              {selectedAboutUs && (
+                <>
+                  <br />
+                  <input type="hidden" value={selectedAboutUs.id} />
+                  <div className="mb-4">
+                    <label
+                      htmlFor="title"
+                      className="mb-1 block text-sm font-medium"
+                    >
+                      Title
+                    </label>
+                    <input
+                      type="text"
+                      id="title"
+                      value={selectedAboutUs.title}
+                      onChange={(e) =>
+                        setSelectedAboutUs((prevState) => ({
+                          ...prevState,
+                          title: e.target.value,
+                        }))
+                      }
+                      className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                  <br />
+                  <div className="mb-4">
+                    <label
+                      htmlFor="description"
+                      className="mb-1 block text-sm font-medium"
+                    >
+                      Description
+                    </label>
+                    <textarea
+                      id="description"
+                      value={selectedAboutUs.description}
+                      onChange={(e) =>
+                        setSelectedAboutUs((prevState) => ({
+                          ...prevState,
+                          description: e.target.value,
+                        }))
+                      }
+                      className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="text-right">
+                    <button
+                      type="submit"
+                      className="w-full rounded-md bg-blue-500 py-2 px-4 text-white transition-colors duration-300 hover:bg-blue-600"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </>
+              )}
+            </form>
+          </div>
+        </div>
       </div>
     </>
   );

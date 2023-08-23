@@ -65,7 +65,7 @@ function Orders() {
                   <div className="mt-2 space-y-2">
                     {Products.map((product) => (
                       <div key={product.id}>
-                        <p>Name: {product.name}</p>
+                        <p>Name: {product.description}</p>
                         <p>Price: {product.price}</p>
                         <p>Quantity: {product.quantity}</p>
                       </div>
