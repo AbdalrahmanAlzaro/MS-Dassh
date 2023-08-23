@@ -10,6 +10,30 @@ function Product() {
   const [products, setProducts] = useState([]);
   const [editingProduct, setEditingProduct] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(""); // Add this state
+
+  const handleCategorySelect = (category) => {
+    console.log(category);
+    setSelectedCategory(category);
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        let url = "http://localhost:3000/allproducts"; // Default URL
+        if (selectedCategory) {
+          url = `http://localhost:3000/allproducts${selectedCategory}`;
+        }
+
+        const response = await axios.get(url);
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, [selectedCategory, refresh]);
 
   const deleteProduct = async (productId) => {
     const shouldDelete = window.confirm(
@@ -239,6 +263,7 @@ function Product() {
           </form>
         </div>
       </div>
+
       <br />
       <br />
       <br />
@@ -246,6 +271,70 @@ function Product() {
       <div className="flex items-center justify-center">
         <h1 className="text-center text-4xl">All product</h1>
       </div>
+
+      <div className="flex flex-wrap justify-center space-x-2 space-y-2 md:space-y-0 md:space-x-4">
+        <button
+          onClick={() => handleCategorySelect("")}
+          className={`rounded py-2 px-4 ${
+            selectedCategory === ""
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => handleCategorySelect("AgriculturalNursery")}
+          className={`rounded py-2 px-4 ${
+            selectedCategory === "AgriculturalNursery"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          Agricultural Nursery
+        </button>
+        <button
+          onClick={() => handleCategorySelect("AgriculturalTool")}
+          className={`rounded py-2 px-4 ${
+            selectedCategory === "AgriculturalTool"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          Agricultural Tool
+        </button>
+        <button
+          onClick={() => handleCategorySelect("AimalFarm")}
+          className={`rounded py-2 px-4 ${
+            selectedCategory === "AnimalFarm"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          Animal Farm
+        </button>
+        <button
+          onClick={() => handleCategorySelect("AimalFarmTool")}
+          className={`rounded py-2 px-4 ${
+            selectedCategory === "AnimalFarmTool"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          Animal Farm Tool
+        </button>
+        <button
+          onClick={() => handleCategorySelect("Offer")}
+          className={`rounded py-2 px-4 ${
+            selectedCategory === "Offer"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          Offer
+        </button>
+      </div>
+
       <br />
       <br />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

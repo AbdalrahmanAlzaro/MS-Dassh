@@ -156,11 +156,11 @@ export function Home() {
           />
         </div>
       </div>
-<br />
-<br />
-<br />
-      <div className="mx-auto flex max-w-4xl items-center justify-between space-x-6">
-        <div className="w-1/2">
+      <br />
+      <br />
+      <br />
+      <div className="mx-auto flex max-w-4xl flex-col items-center justify-between space-y-6 md:flex-row md:space-y-0 md:space-x-6">
+        <div className="w-full md:w-1/2">
           <div className="mx-auto flex h-full max-w-lg flex-col justify-center">
             <h1 className="mb-4 text-center text-2xl font-semibold">
               Edit Contact Information
@@ -216,6 +216,8 @@ export function Home() {
                   />
                 </div>
                 <button
+                  backgroundColor="#454545"
+                  colorScheme="teal"
                   type="button"
                   className="w-full rounded-md bg-blue-500 py-2 px-4 text-white transition-colors duration-300 hover:bg-blue-600"
                   onClick={handleUpdate}
@@ -227,7 +229,7 @@ export function Home() {
           </div>
         </div>
 
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <div className="mx-auto flex h-full max-w-lg flex-col justify-center">
             <h1 className="mb-4 text-center text-2xl font-semibold">
               Update AboutUs Record
@@ -262,7 +264,7 @@ export function Home() {
                     />
                   </div>
                   <br />
-                  <div className="mb-4">
+                  <div className="mb-4 ">
                     <label
                       htmlFor="description"
                       className="mb-1 block text-sm font-medium"
