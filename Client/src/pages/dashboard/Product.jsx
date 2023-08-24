@@ -255,6 +255,9 @@ function Product() {
               />
             </div>
             <button
+              style={{ backgroundColor: "#454545" }}
+              onMouseOver={(e) => (e.target.style.backgroundColor = "#519341")}
+              onMouseOut={(e) => (e.target.style.backgroundColor = "#454545")}
               type="submit"
               className="w-full rounded-md bg-blue-500 py-2 px-4 text-white transition-colors duration-300 hover:bg-blue-600"
             >
@@ -271,13 +274,13 @@ function Product() {
       <div className="flex items-center justify-center">
         <h1 className="text-center text-4xl">All product</h1>
       </div>
-
+      <br />
       <div className="flex flex-wrap justify-center space-x-2 space-y-2 md:space-y-0 md:space-x-4">
         <button
           onClick={() => handleCategorySelect("")}
           className={`rounded py-2 px-4 ${
             selectedCategory === ""
-              ? "bg-blue-500 text-white"
+              ? "bg-green-500 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -287,7 +290,7 @@ function Product() {
           onClick={() => handleCategorySelect("AgriculturalNursery")}
           className={`rounded py-2 px-4 ${
             selectedCategory === "AgriculturalNursery"
-              ? "bg-blue-500 text-white"
+              ? "bg-green-500 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -297,7 +300,7 @@ function Product() {
           onClick={() => handleCategorySelect("AgriculturalTool")}
           className={`rounded py-2 px-4 ${
             selectedCategory === "AgriculturalTool"
-              ? "bg-blue-500 text-white"
+              ? "bg-green-500 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -306,8 +309,8 @@ function Product() {
         <button
           onClick={() => handleCategorySelect("AimalFarm")}
           className={`rounded py-2 px-4 ${
-            selectedCategory === "AnimalFarm"
-              ? "bg-blue-500 text-white"
+            selectedCategory === "AimalFarm"
+              ? "bg-green-500 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -316,8 +319,8 @@ function Product() {
         <button
           onClick={() => handleCategorySelect("AimalFarmTool")}
           className={`rounded py-2 px-4 ${
-            selectedCategory === "AnimalFarmTool"
-              ? "bg-blue-500 text-white"
+            selectedCategory === "AimalFarmTool"
+              ? "bg-green-500 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -327,7 +330,7 @@ function Product() {
           onClick={() => handleCategorySelect("Offer")}
           className={`rounded py-2 px-4 ${
             selectedCategory === "Offer"
-              ? "bg-blue-500 text-white"
+              ? "bg-green-500 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -370,6 +373,11 @@ function Product() {
                 Delete
               </button>
               <button
+                style={{ backgroundColor: "#454545" }}
+                onMouseOver={(e) =>
+                  (e.target.style.backgroundColor = "#519341")
+                }
+                onMouseOut={(e) => (e.target.style.backgroundColor = "#454545")}
                 className="rounded-md bg-blue-500 py-1 px-2 text-white transition-colors duration-300 hover:bg-blue-600"
                 onClick={() => openEditForm(product.id)}
               >
@@ -407,8 +415,8 @@ function Product() {
             closeEditForm();
           }}
         >
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="w-96 rounded-md bg-white p-6 shadow-md">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
+            <div className="w-96 rounded-md bg-white p-6 shadow-md ">
               <h2 className="mb-2 text-lg font-medium">Edit Product</h2>
               <div className="mb-4">
                 <label className="mb-1 block text-sm font-medium">
@@ -506,6 +514,13 @@ function Product() {
               </div>
               <div className="flex justify-end">
                 <button
+                  style={{ backgroundColor: "#454545" }}
+                  onMouseOver={(e) =>
+                    (e.target.style.backgroundColor = "#519341")
+                  }
+                  onMouseOut={(e) =>
+                    (e.target.style.backgroundColor = "#454545")
+                  }
                   className="mr-2 rounded-md bg-blue-500 px-4 py-2 text-white"
                   onClick={handleUpdateProduct}
                 >

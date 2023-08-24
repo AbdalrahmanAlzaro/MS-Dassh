@@ -1,10 +1,6 @@
 import React from "react";
 import { StatisticsCard } from "@/widgets/cards";
-import {
-  UserPlusIcon,
-  UserIcon,
-  ChartBarIcon,
-} from "@heroicons/react/24/solid";
+import { UserIcon, ChartBarIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { FaReceipt } from "react-icons/fa";
@@ -120,7 +116,7 @@ export function Home() {
           <StatisticsCard
             title="User Count"
             icon={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full ">
                 {React.createElement(UserIcon, {
                   className: "w-6 h-6 text-white",
                 })}
@@ -133,7 +129,7 @@ export function Home() {
           <StatisticsCard
             title="User Orders"
             icon={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full ">
                 {React.createElement(FaReceipt, {
                   className: "w-6 h-6 text-white",
                 })}
@@ -146,7 +142,7 @@ export function Home() {
           <StatisticsCard
             title="Total Sales"
             icon={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-500">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full ">
                 {React.createElement(ChartBarIcon, {
                   className: "w-6 h-6 text-white",
                 })}
@@ -216,11 +212,16 @@ export function Home() {
                   />
                 </div>
                 <button
-                  backgroundColor="#454545"
-                  colorScheme="teal"
+                  style={{ backgroundColor: "#454545" }}
                   type="button"
-                  className="w-full rounded-md bg-blue-500 py-2 px-4 text-white transition-colors duration-300 hover:bg-blue-600"
+                  className="w-full rounded-md py-2 px-4 text-white transition-colors duration-300"
                   onClick={handleUpdate}
+                  onMouseOver={(e) =>
+                    (e.target.style.backgroundColor = "#519341")
+                  }
+                  onMouseOut={(e) =>
+                    (e.target.style.backgroundColor = "#454545")
+                  }
                 >
                   Update
                 </button>
@@ -285,6 +286,13 @@ export function Home() {
                   </div>
                   <div className="text-right">
                     <button
+                      style={{ backgroundColor: "#454545" }}
+                      onMouseOver={(e) =>
+                        (e.target.style.backgroundColor = "#519341")
+                      }
+                      onMouseOut={(e) =>
+                        (e.target.style.backgroundColor = "#454545")
+                      }
                       type="submit"
                       className="w-full rounded-md bg-blue-500 py-2 px-4 text-white transition-colors duration-300 hover:bg-blue-600"
                     >
