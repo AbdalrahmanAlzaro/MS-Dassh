@@ -32,13 +32,9 @@ export function SignIn() {
       });
 
       const { token } = response.data;
-      // Save the token in local storage or cookies for future requests
       localStorage.setItem("token", token);
-      // Handle token storage or redirection as needed
-      // For example, you can store the token in localStorage and then navigate
-      console.log("User logged in successfully:", token);
+  
 
-      // Navigate to the home page
       navigate("/home"); // Replace "/home" with the actual path of your home page
     } catch (err) {
       setError("Incorrect email or password");
@@ -50,7 +46,7 @@ export function SignIn() {
   return (
     <>
       <img
-        src="https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
+        src="https://media.istockphoto.com/id/670157616/photo/symmetrical-overview-of-lots-of-small-chrysanthemum-cuttings-in-long-rows.jpg?b=1&s=612x612&w=0&k=20&c=5ehK6qyGWvdzV-u9ODHrMFQYny7MA7oTPHSGLkMnPoA="
         className="absolute inset-0 z-0 h-full w-full object-cover"
         alt="Background"
       />
@@ -83,12 +79,13 @@ export function SignIn() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </CardBody>
-            <CardFooter className="pt-0"
-            >
+            <CardFooter className="pt-0">
               <Button
-               style={{ backgroundColor: "#454545" }}
-               onMouseOver={(e) => (e.target.style.backgroundColor = "#519341")}
-               onMouseOut={(e) => (e.target.style.backgroundColor = "#454545")}
+                style={{ backgroundColor: "#454545" }}
+                onMouseOver={(e) =>
+                  (e.target.style.backgroundColor = "#519341")
+                }
+                onMouseOut={(e) => (e.target.style.backgroundColor = "#454545")}
                 fullWidth
                 type="submit"
                 disabled={loading}
