@@ -21,7 +21,8 @@ function Orders() {
   console.log(orders);
 
   return (
-    <div className="mx-auto mt-12 mb-8 flex w-3/4 flex-col gap-12">
+    <>
+    <div className="mx-auto mt-12 mb-8 flex w-11/12 flex-col gap-12 md:w-3/4">
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
         {orders.map(
           (
@@ -44,24 +45,27 @@ function Orders() {
             const status = "completed"; // You can modify this based on your data
 
             return (
-              <Card key={orderId} className="p-6 shadow-md ">
-                <Typography variant="h6" className="mb-4 ">
+              <div
+                key={orderId}
+                className="mb-6 rounded-lg bg-white p-6 shadow-md"
+              >
+                <h6 className="mb-4 text-lg font-semibold">
                   Order ID: {orderId}
-                </Typography>
+                </h6>
                 <div className="mb-4 flex justify-between">
-                  <Typography className="font-medium">Customer:</Typography>
-                  <Typography>{customerName}</Typography>
+                  <p className="font-medium">Customer:</p>
+                  <p>{customerName}</p>
                 </div>
                 <div className="mb-4 flex justify-between">
-                  <Typography className="font-medium">Email:</Typography>
-                  <Typography>{userEmail}</Typography>
+                  <p className="font-medium">Email:</p>
+                  <p>{userEmail}</p>
                 </div>
                 <div className="mb-4 flex justify-between">
-                  <Typography className="font-medium">Phone Number:</Typography>
-                  <Typography>{userPhone}</Typography>
+                  <p className="font-medium">Phone Number:</p>
+                  <p>{userPhone}</p>
                 </div>
                 <div className="mb-4">
-                  <Typography className="font-medium">Products:</Typography>
+                  <p className="font-medium">Products:</p>
                   <div className="mt-2 space-y-2">
                     {Products.map((product) => (
                       <div key={product.id}>
@@ -73,28 +77,41 @@ function Orders() {
                   </div>
                 </div>
                 <div className="mb-4 flex justify-between">
-                  <Typography className="font-medium">Subtotal:</Typography>
-                  <Typography>${subtotal}</Typography>
+                  <p className="font-medium">Subtotal:</p>
+                  <p>${subtotal}</p>
                 </div>
                 <div className="mb-4 flex justify-between">
-                  <Typography className="font-medium">Date:</Typography>
-                  <Typography>{new Date(date).toLocaleDateString()}</Typography>
+                  <p className="font-medium">Date:</p>
+                  <p>{new Date(date).toLocaleDateString()}</p>
                 </div>
-                <div className="flex justify-between">
-                  <Chip
-                    variant="gradient"
-                    color={status === "completed" ? "green" : "blue"}
-                    value={status}
-                    className="py-0.5 px-2 text-[11px] font-medium"
-                  />
-                  <Typography className="font-medium">{status}</Typography>
+                <div className="flex items-center justify-between">
+                  <span
+                    className={`py-1 px-2 text-xs font-medium ${
+                      status === "completed"
+                        ? "bg-green-500 text-white"
+                        : "bg-blue-500 text-white"
+                    }`}
+                  >
+                    {status}
+                  </span>
+                  <p className="font-medium">{status}</p>
                 </div>
-              </Card>
+              </div>
             );
           }
         )}
       </div>
     </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    </>
   );
 }
 
