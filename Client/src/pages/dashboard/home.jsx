@@ -59,6 +59,7 @@ export function Home() {
         console.error("Error updating AboutUs record:", error);
         // alert("Error updating AboutUs record");
       });
+    alert("AboutUs record updated successfully");
   };
 
   useEffect(() => {
@@ -107,6 +108,7 @@ export function Home() {
       .catch((error) => {
         console.error("Error updating contact info:", error);
       });
+    alert("Contact info updated");
   };
 
   return (
